@@ -6,7 +6,7 @@ Uses simple scripting to add checkbox next to messages on Popup Live Chat.
 ## Planned Features
 1. Reply to live chats.
 
-How to install ?
+# How to install ?
 
 ## Chrome Extrension (publishing soon (hopefully))
 
