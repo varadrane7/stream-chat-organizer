@@ -1,0 +1,29 @@
+{
+	"manifest_version": 3,
+	"name": "Stream Chat Organizer",
+	"version": "1.0",
+	"description": "Uses simple scripting to add checkbox next to messages on Popup Live Chat.",
+	"permissions": ["activeTab", "scripting"],
+	"icons": {
+		"16": "assets/icon.png",
+		"32": "assets/icon.png",
+		"48": "assets/icon.png",
+		"128": "assets/icon.png"
+	},
+	"action": {
+		"default_popup": "popup.html",
+		"default_icon": {
+			"16": "assets/icon.png",
+			"32": "assets/icon.png",
+			"48": "assets/icon.png",
+			"128": "assets/icon.png"
+		}
+	},
+	"content_scripts": [
+		{
+			"matches": ["https://*.youtube.com/live_chat*"],
+			"js": ["content.js"],
+			"css": ["style.css"]
+		}
+	]
+}

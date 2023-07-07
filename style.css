@@ -1,0 +1,4 @@
+/* Replace with the correct selector */
+.chat-message-selector input[type="checkbox"] {
+	margin-right: 20px;
+}
