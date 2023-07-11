@@ -58,6 +58,7 @@ function addCheckboxToMessage(message) {
 
       // Remove the oldest checkbox from the DOM
       oldestCheckbox.parentNode.removeChild(oldestCheckbox);
+      oldestMessage.parentNode.removeChild(oldestMessage);
     }
   }
 }
