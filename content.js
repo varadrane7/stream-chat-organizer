@@ -20,8 +20,8 @@ function addCheckboxToMessage(message) {
     let index = Array.prototype.indexOf.call(chatContainer.children, message);
 
     // Add checkbox and message to their arrays
-    checkboxes[index] = checkbox;
-    messages[index] = message;
+    checkboxes.splice(index, 0, checkbox);
+    messages.splice(index, 0, message);
 
     checkbox.addEventListener("click", function (event) {
       event.stopPropagation();
@@ -32,8 +32,7 @@ function addCheckboxToMessage(message) {
 
       // Select all previous checkboxes if checkbox is checked
       if (checkbox.checked) {
-        let start = Math.max(0, index - 30);
-        for (let i = index; i >= start; i--) {
+        for (let i = index; i >= 0; i--) {
           if (checkboxes[i]) {
             checkboxes[i].checked = true;
             grayOutChatMessage(checkboxes[i].parentNode, true);
@@ -42,7 +41,7 @@ function addCheckboxToMessage(message) {
       }
       // Uncheck all following checkboxes if checkbox is unchecked
       else {
-        for (let i = index; i < checkboxes.length; i++) {
+        for (let i = index + 1; i < checkboxes.length; i++) {
           if (checkboxes[i]) {
             checkboxes[i].checked = false;
             grayOutChatMessage(checkboxes[i].parentNode, false);
@@ -59,9 +58,6 @@ function addCheckboxToMessage(message) {
 
       // Remove the oldest checkbox from the DOM
       oldestCheckbox.parentNode.removeChild(oldestCheckbox);
-
-      // Remove the oldest message from the array (not from the DOM)
-      messages.splice(messages.indexOf(oldestMessage), 1);
     }
   }
 }
