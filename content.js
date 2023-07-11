@@ -2,52 +2,65 @@
 let checkboxes = [];
 let messages = [];
 
+// Maximum number of elements allowed in the arrays
+const MAX_ELEMENTS = 90;
+
 // Function to add a checkbox to a chat message
 function addCheckboxToMessage(message) {
-	// Check if the message has a sub element with id="author-photo"
-	if (message.querySelector("#author-photo")) {
-		// Create a new checkbox
-		const checkbox = document.createElement("input");
-		checkbox.type = "checkbox";
+  // Check if the message has a sub element with id="author-photo"
+  if (message.querySelector("#author-photo")) {
+    // Create a new checkbox
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
 
-		// Insert the checkbox at the beginning of the chat message
-		message.insertBefore(checkbox, message.firstChild);
+    // Insert the checkbox at the beginning of the chat message
+    message.insertBefore(checkbox, message.firstChild);
 
-		// Get the index of the message
-		let index = Array.prototype.indexOf.call(chatContainer.children, message);
+    // Get the index of the message
+    let index = Array.prototype.indexOf.call(chatContainer.children, message);
 
-		// Add checkbox and message to their arrays
-		checkboxes[index] = checkbox;
-		messages[index] = message;
+    // Add checkbox and message to their arrays
+    checkboxes[index] = checkbox;
+    messages[index] = message;
 
-		checkbox.addEventListener("click", function (event) {
-			event.stopPropagation();
-		});
+    checkbox.addEventListener("click", function (event) {
+      event.stopPropagation();
+    });
 
-		checkbox.addEventListener("change", function (event) {
-			event.stopPropagation();
+    checkbox.addEventListener("change", function (event) {
+      event.stopPropagation();
 
-			// Select all previous checkboxes if checkbox is checked
-			if (checkbox.checked) {
-				let start = Math.max(0, index - 30);
-				for (let i = index; i >= start; i--) {
-					if (checkboxes[i]) {
-						checkboxes[i].checked = true;
-						grayOutChatMessage(checkboxes[i].parentNode, true);
-					}
-				}
-			}
-			// Uncheck all following checkboxes if checkbox is unchecked
-			else {
-				for (let i = index; i < checkboxes.length; i++) {
-					if (checkboxes[i]) {
-						checkboxes[i].checked = false;
-						grayOutChatMessage(checkboxes[i].parentNode, false);
-					}
-				}
-			}
-		});
-	}
+      // Select all previous checkboxes if checkbox is checked
+      if (checkbox.checked) {
+        let start = Math.max(0, index - 30);
+        for (let i = index; i >= start; i--) {
+          if (checkboxes[i]) {
+            checkboxes[i].checked = true;
+            grayOutChatMessage(checkboxes[i].parentNode, true);
+          }
+        }
+      }
+      // Uncheck all following checkboxes if checkbox is unchecked
+      else {
+        for (let i = index; i < checkboxes.length; i++) {
+          if (checkboxes[i]) {
+            checkboxes[i].checked = false;
+            grayOutChatMessage(checkboxes[i].parentNode, false);
+          }
+        }
+      }
+    });
+
+    // Check if arrays have reached maximum capacity
+    if (checkboxes.length > MAX_ELEMENTS) {
+      // Remove the oldest checkbox and its corresponding message
+      const oldestCheckbox = checkboxes.shift();
+      const oldestMessage = messages.shift();
+
+      // Remove the oldest checkbox from the DOM
+      oldestCheckbox.parentNode.removeChild(oldestCheckbox);
+    }
+  }
 }
 
 // Function to gray out or ungray a chat message
