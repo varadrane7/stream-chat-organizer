@@ -30,22 +30,21 @@ function addCheckboxToMessage(message) {
     checkbox.addEventListener("change", function (event) {
       event.stopPropagation();
 
+      // Get the index of the clicked checkbox
+      let clickedIndex = checkboxes.indexOf(checkbox);
+
       // Select all previous checkboxes if checkbox is checked
       if (checkbox.checked) {
-        for (let i = index; i >= 0; i--) {
-          if (checkboxes[i]) {
-            checkboxes[i].checked = true;
-            grayOutChatMessage(checkboxes[i].parentNode, true);
-          }
+        for (let i = clickedIndex - 1; i >= 0; i--) {
+          checkboxes[i].checked = true;
+          grayOutChatMessage(checkboxes[i].parentNode, true);
         }
       }
       // Uncheck all following checkboxes if checkbox is unchecked
       else {
-        for (let i = index + 1; i < checkboxes.length; i++) {
-          if (checkboxes[i]) {
-            checkboxes[i].checked = false;
-            grayOutChatMessage(checkboxes[i].parentNode, false);
-          }
+        for (let i = clickedIndex + 1; i < checkboxes.length; i++) {
+          checkboxes[i].checked = false;
+          grayOutChatMessage(checkboxes[i].parentNode, false);
         }
       }
     });
@@ -65,34 +64,34 @@ function addCheckboxToMessage(message) {
 
 // Function to gray out or ungray a chat message
 function grayOutChatMessage(message, gray) {
-	const chatTextElement = message.querySelector("#message");
-	if (chatTextElement) {
-		chatTextElement.style.color = gray ? "grey" : "";
-		chatTextElement.style.textDecoration = gray ? "line-through" : "";
-	}
+  const chatTextElement = message.querySelector("#message");
+  if (chatTextElement) {
+    chatTextElement.style.color = gray ? "grey" : "";
+    chatTextElement.style.textDecoration = gray ? "line-through" : "";
+  }
 }
 
 // Select the chat container
 const chatContainer = document.querySelector(
-	"#items.style-scope.yt-live-chat-item-list-renderer"
+  "#items.style-scope.yt-live-chat-item-list-renderer"
 );
 
 // Add checkboxes to all existing chat messages
 for (let message of chatContainer.children) {
-	addCheckboxToMessage(message);
+  addCheckboxToMessage(message);
 }
 
 // Set up the MutationObserver to add checkboxes to new chat messages
 const observer = new MutationObserver((mutationsList) => {
-	for (let mutation of mutationsList) {
-		if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
-			for (let node of mutation.addedNodes) {
-				if (node.nodeType === Node.ELEMENT_NODE) {
-					addCheckboxToMessage(node);
-				}
-			}
-		}
-	}
+  for (let mutation of mutationsList) {
+    if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
+      for (let node of mutation.addedNodes) {
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          addCheckboxToMessage(node);
+        }
+      }
+    }
+  }
 });
 
 observer.observe(chatContainer, { childList: true });
