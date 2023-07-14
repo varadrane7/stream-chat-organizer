@@ -1,7 +1,7 @@
 # Stream Chat Organizer
 
 Uses simple scripting to add checkbox next to messages on Popup Live Chat.
-> Version: 1.0
+> Version: 1.2
 
 ## Planned Features
 1. Reply to live chats.
