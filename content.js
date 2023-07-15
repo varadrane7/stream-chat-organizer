@@ -33,6 +33,9 @@ function addCheckboxToMessage(message) {
       // Get the index of the clicked checkbox
       let clickedIndex = checkboxes.indexOf(checkbox);
 
+      // Grey out or un-grey the clicked checkbox
+      grayOutChatMessage(checkbox.parentNode, checkbox.checked);
+
       // Select all previous checkboxes if checkbox is checked
       if (checkbox.checked) {
         for (let i = clickedIndex - 1; i >= 0; i--) {
@@ -62,7 +65,7 @@ function addCheckboxToMessage(message) {
   }
 }
 
-// Function to gray out or ungray a chat message
+// Function to gray out or un-gray a chat message
 function grayOutChatMessage(message, gray) {
   const chatTextElement = message.querySelector("#message");
   if (chatTextElement) {
