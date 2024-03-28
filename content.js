@@ -98,3 +98,55 @@ const observer = new MutationObserver((mutationsList) => {
 });
 
 observer.observe(chatContainer, { childList: true });
+
+// Function to add a heart-shaped like button to a chat message
+function addHeartButtonToMessage(message) {
+  // Check if the message has a sub element with id="author-photo"
+  if (message.querySelector("#author-photo")) {
+    // Create a new like button
+    const likeButton = document.createElement("button");
+    likeButton.innerHTML = "&#10084;"; // Unicode for heart symbol
+    likeButton.style.color = "gray"; // Set color to black
+    likeButton.style.backgroundColor = "transparent"; // Remove background color
+    likeButton.style.border = "none"; // Remove border
+    likeButton.style.cursor = "pointer"; // Change cursor to pointer
+    likeButton.style.fontSize = "1.2rem"; // Adjust font size
+    likeButton.style.outline = "none"; // Remove outline on focus
+    likeButton.style.display = "flex"; // Use flexbox
+    likeButton.style.justifyContent = "center"; // Center content horizontally
+    likeButton.style.alignItems = "center"; // Center content vertically
+
+    // Insert the like button after the chat message
+    message.appendChild(likeButton);
+
+    likeButton.addEventListener("click", function (event) {
+      event.stopPropagation();
+      // Toggle color on click
+      if (likeButton.style.color === "gray") {
+        likeButton.style.color = "red";
+      } else {
+        likeButton.style.color = "gray";
+      }
+    });
+  }
+}
+
+// Add heart-shaped like buttons to all existing chat messages
+for (let message of chatContainer.children) {
+  addHeartButtonToMessage(message);
+}
+
+// Set up the MutationObserver to add heart-shaped like buttons to new chat messages
+const likeObserver = new MutationObserver((mutationsList) => {
+  for (let mutation of mutationsList) {
+    if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
+      for (let node of mutation.addedNodes) {
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          addHeartButtonToMessage(node);
+        }
+      }
+    }
+  }
+});
+
+likeObserver.observe(chatContainer, { childList: true });
